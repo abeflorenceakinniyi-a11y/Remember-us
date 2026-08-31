@@ -319,10 +319,9 @@ function revealAnswers(
 
 
     const resultMessage =
-        match
-            ? "❤️ MATCH! +10 LOVE POINTS"
-            : "💕 Different answers — now talk about the memory.";
-
+    match
+        ? "❤️ YOUR FIRST MEMORY — You remembered the beginning of your story."
+        : "💕 TWO MEMORIES, ONE STORY — You remembered the moment differently.";
 
     document.body.innerHTML = `
 
@@ -368,9 +367,8 @@ function revealAnswers(
 
 
             <p class="game-note">
-                Take a moment to talk about your first meeting. ❤️
-            </p>
-
+    Take a moment to tell each other what you remember most about that day. ❤️
+</p>
         </main>
 
     `;
