@@ -86,22 +86,18 @@ function startGame() {
     `;
 
 
-    const continueButton =
-        document.getElementById(
-            "continueButton"
+    document
+        .getElementById("continueButton")
+        .addEventListener(
+            "click",
+            continueToGame
         );
-
-
-    continueButton.addEventListener(
-        "click",
-        continueToGame
-    );
 
 }
 
 
 // =========================================
-// CONTINUE TO FIRST ROUND
+// CONTINUE
 // =========================================
 
 function continueToGame() {
@@ -130,7 +126,7 @@ function continueToGame() {
     }
 
 
-    showQuestion(
+    showQuestionOne(
         playerOne,
         playerTwo
     );
@@ -142,7 +138,7 @@ function continueToGame() {
 // QUESTION 1
 // =========================================
 
-function showQuestion(
+function showQuestionOne(
     playerOne,
     playerTwo
 ) {
@@ -162,7 +158,7 @@ function showQuestion(
             <div class="question-card">
 
                 <p class="question-label">
-                    ${playerOne}, your turn
+                    ${escapeHTML(playerOne)}, your turn
                 </p>
 
                 <h2>
@@ -194,7 +190,7 @@ function showQuestion(
         .getElementById("passButton")
         .addEventListener(
             "click",
-            () => showPartnerTwo(
+            () => showPartnerTwoQuestionOne(
                 playerOne,
                 playerTwo
             )
@@ -204,10 +200,10 @@ function showQuestion(
 
 
 // =========================================
-// PARTNER TWO
+// PARTNER TWO — QUESTION 1
 // =========================================
 
-function showPartnerTwo(
+function showPartnerTwoQuestionOne(
     playerOne,
     playerTwo
 ) {
@@ -244,7 +240,7 @@ function showPartnerTwo(
             <div class="question-card">
 
                 <p class="question-label">
-                    ${playerTwo}, your turn
+                    ${escapeHTML(playerTwo)}, your turn
                 </p>
 
                 <h2>
@@ -264,7 +260,7 @@ function showPartnerTwo(
             </div>
 
             <p class="game-note">
-                🤫 ${playerTwo}, don't look at ${playerOne}'s answer.
+                🤫 Don't look at ${escapeHTML(playerOne)}'s answer.
             </p>
 
         </main>
@@ -276,7 +272,7 @@ function showPartnerTwo(
         .getElementById("revealButton")
         .addEventListener(
             "click",
-            () => revealAnswers(
+            () => revealQuestionOne(
                 playerOne,
                 playerTwo,
                 answerOne
@@ -287,10 +283,10 @@ function showPartnerTwo(
 
 
 // =========================================
-// REVEAL ANSWERS
+// REVEAL QUESTION 1
 // =========================================
 
-function revealAnswers(
+function revealQuestionOne(
     playerOne,
     playerTwo,
     answerOne
@@ -319,9 +315,10 @@ function revealAnswers(
 
 
     const resultMessage =
-    match
-        ? "❤️ YOUR FIRST MEMORY — You remembered the beginning of your story."
-        : "💕 TWO MEMORIES, ONE STORY — You remembered the moment differently.";
+        match
+            ? "❤️ YOUR FIRST MEMORY — You remembered the beginning of your story."
+            : "💕 TWO MEMORIES, ONE STORY — You remembered the moment differently.";
+
 
     document.body.innerHTML = `
 
@@ -338,7 +335,7 @@ function revealAnswers(
             <div class="answer-card">
 
                 <p class="answer-name">
-                    ${playerOne}
+                    ${escapeHTML(playerOne)}
                 </p>
 
                 <p class="answer-text">
@@ -347,11 +344,10 @@ function revealAnswers(
 
             </div>
 
-
             <div class="answer-card">
 
                 <p class="answer-name">
-                    ${playerTwo}
+                    ${escapeHTML(playerTwo)}
                 </p>
 
                 <p class="answer-text">
@@ -360,15 +356,317 @@ function revealAnswers(
 
             </div>
 
-
             <div class="result">
                 ${resultMessage}
             </div>
 
+            <p class="game-note">
+                Take a moment to tell each other what you remember most about that day. ❤️
+            </p>
+
+            <button
+                id="nextButton"
+                class="next-button"
+            >
+                NEXT
+            </button>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("nextButton")
+        .addEventListener(
+            "click",
+            () => showQuestionTwo(
+                playerOne,
+                playerTwo
+            )
+        );
+
+}
+
+
+// =========================================
+// QUESTION 2
+// =========================================
+
+function showQuestionTwo(
+    playerOne,
+    playerTwo
+) {
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Question 2
+            </h1>
+
+            <div class="question-card">
+
+                <p class="question-label">
+                    ${escapeHTML(playerOne)}, your turn
+                </p>
+
+                <h2>
+                    What was your first impression of me?
+                </h2>
+
+                <textarea
+                    id="answerOne"
+                    placeholder="Write your answer..."
+                    maxlength="300"
+                ></textarea>
+
+                <button id="passButton">
+                    PASS THE PHONE
+                </button>
+
+            </div>
 
             <p class="game-note">
-    Take a moment to tell each other what you remember most about that day. ❤️
-</p>
+                🤫 Don't let your partner see your answer.
+            </p>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("passButton")
+        .addEventListener(
+            "click",
+            () => showPartnerTwoQuestionTwo(
+                playerOne,
+                playerTwo
+            )
+        );
+
+}
+
+
+// =========================================
+// PARTNER TWO — QUESTION 2
+// =========================================
+
+function showPartnerTwoQuestionTwo(
+    playerOne,
+    playerTwo
+) {
+
+    const answerOne =
+        document
+            .getElementById("answerOne")
+            .value
+            .trim();
+
+
+    if (!answerOne) {
+
+        alert(
+            "Please enter an answer first."
+        );
+
+        return;
+    }
+
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Question 2
+            </h1>
+
+            <div class="question-card">
+
+                <p class="question-label">
+                    ${escapeHTML(playerTwo)}, your turn
+                </p>
+
+                <h2>
+                    What was your first impression of me?
+                </h2>
+
+                <textarea
+                    id="answerTwo"
+                    placeholder="Write your answer..."
+                    maxlength="300"
+                ></textarea>
+
+                <button id="revealButton">
+                    REVEAL ANSWERS
+                </button>
+
+            </div>
+
+            <p class="game-note">
+                🤫 Don't look at ${escapeHTML(playerOne)}'s answer.
+            </p>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("revealButton")
+        .addEventListener(
+            "click",
+            () => revealQuestionTwo(
+                playerOne,
+                playerTwo,
+                answerOne
+            )
+        );
+
+}
+
+
+// =========================================
+// REVEAL QUESTION 2
+// =========================================
+
+function revealQuestionTwo(
+    playerOne,
+    playerTwo,
+    answerOne
+) {
+
+    const answerTwo =
+        document
+            .getElementById("answerTwo")
+            .value
+            .trim();
+
+
+    if (!answerTwo) {
+
+        alert(
+            "Please enter an answer first."
+        );
+
+        return;
+    }
+
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Your First Impressions
+            </h1>
+
+            <div class="answer-card">
+
+                <p class="answer-name">
+                    ${escapeHTML(playerOne)}
+                </p>
+
+                <p class="answer-text">
+                    ${escapeHTML(answerOne)}
+                </p>
+
+            </div>
+
+            <div class="answer-card">
+
+                <p class="answer-name">
+                    ${escapeHTML(playerTwo)}
+                </p>
+
+                <p class="answer-text">
+                    ${escapeHTML(answerTwo)}
+                </p>
+
+            </div>
+
+            <div class="result">
+                ❤️ TWO FIRST IMPRESSIONS — Now discover what changed.
+            </div>
+
+            <p class="game-note">
+                Tell each other what you think about those first impressions today. ❤️
+            </p>
+
+            <button
+                id="nextButton"
+                class="next-button"
+            >
+                NEXT
+            </button>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("nextButton")
+        .addEventListener(
+            "click",
+            () => showQuestionThree(
+                playerOne,
+                playerTwo
+            )
+        );
+
+}
+
+
+// =========================================
+// QUESTION 3 PLACEHOLDER
+// =========================================
+
+function showQuestionThree(
+    playerOne,
+    playerTwo
+) {
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                COMING NEXT
+            </p>
+
+            <h1>
+                A New Chapter
+            </h1>
+
+            <p class="setup-text">
+                The next part of Remember Us
+                will introduce wishes, promises,
+                memories and real couple challenges.
+            </p>
+
+            <button
+                class="next-button"
+                onclick="location.reload()"
+            >
+                BACK TO START
+            </button>
+
         </main>
 
     `;
@@ -389,4 +687,4 @@ function escapeHTML(text) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 
-            }
+                        }
