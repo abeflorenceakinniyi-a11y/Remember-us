@@ -1,5 +1,5 @@
 // =========================================
-// REMEMBER US — GAME START
+// REMEMBER US — GAME
 // =========================================
 
 const startButton =
@@ -43,7 +43,6 @@ function startGame() {
                 can begin.
             </p>
 
-
             <div class="player-box">
 
                 <label for="playerOne">
@@ -58,7 +57,6 @@ function startGame() {
                 >
 
             </div>
-
 
             <div class="player-box">
 
@@ -75,13 +73,9 @@ function startGame() {
 
             </div>
 
-
-            <button
-                id="continueButton"
-            >
+            <button id="continueButton">
                 CONTINUE
             </button>
-
 
             <p class="one-phone">
                 📱 One phone. Stay together.
@@ -107,7 +101,7 @@ function startGame() {
 
 
 // =========================================
-// CONTINUE TO GAME
+// CONTINUE TO FIRST ROUND
 // =========================================
 
 function continueToGame() {
@@ -136,8 +130,265 @@ function continueToGame() {
     }
 
 
-    alert(
-        `Welcome ${playerOne} and ${playerTwo}! ❤️`
+    showQuestion(
+        playerOne,
+        playerTwo
     );
 
 }
+
+
+// =========================================
+// QUESTION 1
+// =========================================
+
+function showQuestion(
+    playerOne,
+    playerTwo
+) {
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Question 1
+            </h1>
+
+            <div class="question-card">
+
+                <p class="question-label">
+                    ${playerOne}, your turn
+                </p>
+
+                <h2>
+                    Where did you first meet?
+                </h2>
+
+                <textarea
+                    id="answerOne"
+                    placeholder="Write your answer..."
+                    maxlength="300"
+                ></textarea>
+
+                <button id="passButton">
+                    PASS THE PHONE
+                </button>
+
+            </div>
+
+            <p class="game-note">
+                🤫 Don't let your partner see your answer.
+            </p>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("passButton")
+        .addEventListener(
+            "click",
+            () => showPartnerTwo(
+                playerOne,
+                playerTwo
+            )
+        );
+
+}
+
+
+// =========================================
+// PARTNER TWO
+// =========================================
+
+function showPartnerTwo(
+    playerOne,
+    playerTwo
+) {
+
+    const answerOne =
+        document
+            .getElementById("answerOne")
+            .value
+            .trim();
+
+
+    if (!answerOne) {
+
+        alert(
+            "Please enter an answer first."
+        );
+
+        return;
+    }
+
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Question 1
+            </h1>
+
+            <div class="question-card">
+
+                <p class="question-label">
+                    ${playerTwo}, your turn
+                </p>
+
+                <h2>
+                    Where did you first meet?
+                </h2>
+
+                <textarea
+                    id="answerTwo"
+                    placeholder="Write your answer..."
+                    maxlength="300"
+                ></textarea>
+
+                <button id="revealButton">
+                    REVEAL ANSWERS
+                </button>
+
+            </div>
+
+            <p class="game-note">
+                🤫 ${playerTwo}, don't look at ${playerOne}'s answer.
+            </p>
+
+        </main>
+
+    `;
+
+
+    document
+        .getElementById("revealButton")
+        .addEventListener(
+            "click",
+            () => revealAnswers(
+                playerOne,
+                playerTwo,
+                answerOne
+            )
+        );
+
+}
+
+
+// =========================================
+// REVEAL ANSWERS
+// =========================================
+
+function revealAnswers(
+    playerOne,
+    playerTwo,
+    answerOne
+) {
+
+    const answerTwo =
+        document
+            .getElementById("answerTwo")
+            .value
+            .trim();
+
+
+    if (!answerTwo) {
+
+        alert(
+            "Please enter an answer first."
+        );
+
+        return;
+    }
+
+
+    const match =
+        answerOne.toLowerCase() ===
+        answerTwo.toLowerCase();
+
+
+    const resultMessage =
+        match
+            ? "❤️ MATCH! +10 LOVE POINTS"
+            : "💕 Different answers — now talk about the memory.";
+
+
+    document.body.innerHTML = `
+
+        <main class="game-screen">
+
+            <p class="eyebrow">
+                OUR BEGINNING
+            </p>
+
+            <h1>
+                Your Answers
+            </h1>
+
+            <div class="answer-card">
+
+                <p class="answer-name">
+                    ${playerOne}
+                </p>
+
+                <p class="answer-text">
+                    ${escapeHTML(answerOne)}
+                </p>
+
+            </div>
+
+
+            <div class="answer-card">
+
+                <p class="answer-name">
+                    ${playerTwo}
+                </p>
+
+                <p class="answer-text">
+                    ${escapeHTML(answerTwo)}
+                </p>
+
+            </div>
+
+
+            <div class="result">
+                ${resultMessage}
+            </div>
+
+
+            <p class="game-note">
+                Take a moment to talk about your first meeting. ❤️
+            </p>
+
+        </main>
+
+    `;
+
+}
+
+
+// =========================================
+// SAFE TEXT DISPLAY
+// =========================================
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+            }
